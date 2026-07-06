@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="id">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260706-05-21290da"}');</script><script src="/_sdk/f432b76fb310b513.telemetry_sdk.js" integrity="sha512-9FJQ55EKmmqhyyik8BhrMVfm0+iYYfb8uOlRsjtkxJMEI97qOVEI4PnHohDjQAtvAep0IOEpdQ64eki0sz62ug=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrasi Bu A English for Kelas 7</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body { font-family: 'DM Sans', sans-serif; }
+        .sidebar-btn.active { background: #86efac; color: #14532d; }
+        .sub-tab.active { background: #bbf7d0; color: #14532d; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+    </style>
+  <script src="/_sdk/0b3af1c300e720aa.resizing_sdk.js" type="text/javascript" integrity="sha512-nX1P6oXZmEY5wCI2lUVg3BwKu1cr0yi+ZpXgZ0Yn90vkSwvpmyzBMvOyD6VLJUtBwFI2dSrw1b6OvORxSggw3w=="></script>
+ </head>
+ <body data-template-id="__page-root" class="min-h-screen flex"><!-- Sidebar -->
+  <aside data-template-id="sidebar" class="canva-sidebar w-64 min-h-screen p-4 flex flex-col gap-2 shrink-0">
+   <h1 data-template-id="app-title" class="canva-text font-bold text-lg mb-6 px-2"></h1><button class="sidebar-btn active flex items-center gap-3 px-4 py-3 rounded-lg text-left w-full font-medium transition" data-view="dashboard"> <i data-lucide="layout-dashboard" style="width:20px;height:20px"></i> Dashboard </button> <button class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-lg text-left w-full font-medium transition" data-view="kelas"> <i data-lucide="users" style="width:20px;height:20px"></i> Kelas </button> <button class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-lg text-left w-full font-medium transition" data-view="jurnal"> <i data-lucide="book-open" style="width:20px;height:20px"></i> Jurnal Pembelajaran </button>
+  </aside><!-- Main -->
+  <main class="flex-1 p-6 overflow-auto"><!-- Dashboard -->
+   <section class="view-section active" id="view-dashboard">
+    <h2 data-template-id="dashboard-title" class="canva-text font-bold text-2xl mb-4"></h2>
+    <div data-template-id="profile-card" class="canva-card rounded-xl p-6 mb-6 shadow-sm">
+     <p class="font-semibold text-lg" data-template-id="teacher-name"></p>
+     <p class="mt-1 opacity-75" data-template-id="teacher-info"></p>
+    </div>
+    <h3 data-template-id="class-list-title" class="canva-text font-semibold text-lg mb-3"></h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="class-grid"></div>
+   </section><!-- Kelas -->
+   <section class="view-section" id="view-kelas">
+    <h2 data-template-id="kelas-title" class="canva-text font-bold text-2xl mb-4"></h2>
+    <div class="flex gap-2 mb-4 flex-wrap" id="class-tabs"></div>
+    <div class="flex gap-2 mb-4"><button class="sub-tab active px-4 py-2 rounded-lg text-sm font-medium" data-subtab="profil">Profil Murid</button> <button class="sub-tab px-4 py-2 rounded-lg text-sm font-medium" data-subtab="hadir">Kehadiran</button> <button class="sub-tab px-4 py-2 rounded-lg text-sm font-medium" data-subtab="catatan">Catatan Khusus</button> <button class="sub-tab px-4 py-2 rounded-lg text-sm font-medium" data-subtab="nilai">Daftar Nilai</button>
+    </div><!-- Profil Murid -->
+    <div id="subtab-profil">
+     <div class="flex gap-2 mb-4 flex-wrap items-center"><input id="student-name-input" type="text" placeholder="Nama murid" class="border rounded-lg px-3 py-2 text-sm"> <button onclick="addStudent()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Tambah</button> <label class="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer"> Upload CSV <input type="file" accept=".csv" class="hidden" onchange="uploadCSV(event)"> </label> <button onclick="downloadStudents()" class="bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium">⬇ Download</button>
+     </div>
+     <div id="student-list" class="space-y-2"></div>
+    </div><!-- Kehadiran -->
+    <div id="subtab-hadir" class="hidden">
+     <div class="flex gap-2 mb-4 items-center flex-wrap"><input id="attendance-date" type="date" class="border rounded-lg px-3 py-2 text-sm"> <select id="attendance-student-select" class="border rounded-lg px-3 py-2 text-sm"></select> <select id="attendance-status-select" class="border rounded-lg px-3 py-2 text-sm"> <option value="">Keterangan</option> <option value="Hadir">H (Hadir)</option> <option value="Izin">I (Izin)</option> <option value="Sakit">S (Sakit)</option> <option value="Alpha">A (Alpha)</option> </select> <button onclick="saveAttendanceInput()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Simpan</button> <button onclick="downloadAttendance()" class="bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium">⬇ Download</button>
+     </div>
+     <div id="attendance-list" class="space-y-2"></div>
+    </div><!-- Catatan Khusus -->
+    <div id="subtab-catatan" class="hidden">
+     <div class="flex gap-2 mb-4 flex-wrap items-center"><select id="note-student-select" class="border rounded-lg px-3 py-2 text-sm"></select> <input id="note-text" type="text" placeholder="Catatan..." class="border rounded-lg px-3 py-2 text-sm flex-1"> <button onclick="addNote()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Simpan</button>
+     </div>
+     <div id="notes-list" class="space-y-2"></div>
+    </div><!-- Daftar Nilai -->
+    <div id="subtab-nilai" class="hidden">
+     <div class="flex gap-2 mb-4 flex-wrap items-center"><select id="nilai-student-select" class="border rounded-lg px-3 py-2 text-sm"></select> <select id="nilai-period-select" class="border rounded-lg px-3 py-2 text-sm"> <option value="">Pilih TP</option> <option value="tp1">TP 1</option> <option value="tp2">TP 2</option> <option value="tp3">TP 3</option> <option value="tp4">TP 4</option> <option value="tp5">TP 5</option> <option value="tp6">TP 6</option> <option value="tp7">TP 7</option> <option value="tp8">TP 8</option> <option value="tp9">TP 9</option> <option value="psas">PSAS</option> </select> <input id="nilai-input" type="number" min="0" max="100" placeholder="Nilai (0-100)" class="border rounded-lg px-3 py-2 text-sm"> <button onclick="saveNilaiInput()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Simpan</button> <button onclick="downloadScores()" class="bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium">⬇ Download</button>
+     </div>
+     <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse">
+       <thead>
+        <tr class="bg-green-100 text-left">
+         <th class="p-2">Nama Murid</th>
+         <th class="p-2">TP 1</th>
+         <th class="p-2">TP 2</th>
+         <th class="p-2">TP 3</th>
+         <th class="p-2">TP 4</th>
+         <th class="p-2">TP 5</th>
+         <th class="p-2">TP 6</th>
+         <th class="p-2">TP 7</th>
+         <th class="p-2">TP 8</th>
+         <th class="p-2">TP 9</th>
+         <th class="p-2">PSAS</th>
+        </tr>
+       </thead>
+       <tbody id="nilai-table"></tbody>
+      </table>
+     </div>
+    </div>
+   </section><!-- Jurnal -->
+   <section class="view-section" id="view-jurnal">
+    <h2 data-template-id="jurnal-title" class="canva-text font-bold text-2xl mb-4"></h2>
+    <form id="jurnal-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6"><input id="j-date" type="date" class="border rounded-lg px-3 py-2 text-sm" required> <select id="j-period" class="border rounded-lg px-3 py-2 text-sm" required> <option value="">Jam ke-</option> <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option> </select> <select id="j-class" class="border rounded-lg px-3 py-2 text-sm" required> <option value="">Kelas</option> <option>7A</option><option>7B</option><option>7C</option><option>7D</option><option>7E</option><option>7F</option> </select> <input id="j-activity" type="text" placeholder="Kegiatan Pembelajaran" class="border rounded-lg px-3 py-2 text-sm sm:col-span-2" required> <input id="j-notes" type="text" placeholder="Catatan" class="border rounded-lg px-3 py-2 text-sm"> <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Simpan Jurnal</button>
+    </form><button onclick="downloadJurnal()" class="bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium mb-4">⬇ Download Jurnal</button>
+    <div class="overflow-x-auto">
+     <table class="w-full text-sm border-collapse">
+      <thead>
+       <tr class="bg-green-100 text-left">
+        <th class="p-2">Tanggal</th>
+        <th class="p-2">Jam</th>
+        <th class="p-2">Kelas</th>
+        <th class="p-2">Kegiatan</th>
+        <th class="p-2">Catatan</th>
+        <th class="p-2"></th>
+       </tr>
+      </thead>
+      <tbody id="jurnal-table"></tbody>
+     </table>
+    </div>
+   </section><!-- Loading overlay -->
+   <div id="loading" class="hidden fixed inset-0 bg-black/20 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-4 shadow-lg text-sm font-medium">
+     Menyimpan...
+    </div>
+   </div>
+  </main>
+  <script src="/_sdk/e063511df281944a.editing_sdk.js" integrity="sha512-Xa8p4aPfoMxVnzxQE2WAG0FfoaPLxdjOJMfUZGm1yZosJTYmnNDvgLkJ2EoN0i3zxjeQVAzUMSXNvTKQVqbXyQ=="></script>
+  <script src="/_sdk/0179d719c431a79e.data_sdk.js" integrity="sha512-OsRvJkI5GkC3MJQcgotQYotpzrMSX415GiKKgvYdxQEEkzD/fdchShO2FMSy0PJr/tiINMXOk5Vl2zAgg6bUiA=="></script>
+  <script>
+    const CLASSES = ['7A','7B','7C','7D','7E','7F'];
+    let allData = [];
+    let currentClass = '7A';
+    let currentSubtab = 'profil';
+
+    // Data SDK
+    const handler = { onDataChanged(data) { allData = data; render(); } };
+
+    (async () => {
+        const r = await window.dataSdk.init(handler);
+        if (!r.isOk) console.error('SDK init failed');
+    })();
+
+    function showLoading(v) { document.getElementById('loading').classList.toggle('hidden', !v); }
+
+    // Navigation
+    document.querySelectorAll('.sidebar-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('view-' + btn.dataset.view).classList.add('active');
+        });
+    });
+
+    // Sub-tabs
+    document.querySelectorAll('.sub-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSubtab = btn.dataset.subtab;
+            document.getElementById('subtab-profil').classList.toggle('hidden', currentSubtab !== 'profil');
+            document.getElementById('subtab-hadir').classList.toggle('hidden', currentSubtab !== 'hadir');
+            document.getElementById('subtab-catatan').classList.toggle('hidden', currentSubtab !== 'catatan');
+            document.getElementById('subtab-nilai').classList.toggle('hidden', currentSubtab !== 'nilai');
+            render();
+        });
+    });
+
+    // Class grid & tabs
+    function buildClassUI() {
+        const grid = document.getElementById('class-grid');
+        const tabs = document.getElementById('class-tabs');
+        CLASSES.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'bg-green-100 rounded-xl p-4 text-center font-semibold text-green-800 cursor-pointer hover:bg-green-200 transition';
+            card.textContent = c;
+            card.onclick = () => { currentClass = c; document.querySelectorAll('.sidebar-btn')[1].click(); render(); };
+            grid.appendChild(card);
+
+            const tab = document.createElement('button');
+            tab.className = 'px-4 py-2 rounded-lg text-sm font-medium ' + (c === currentClass ? 'bg-green-300 text-green-900' : 'bg-gray-100');
+            tab.textContent = c;
+            tab.onclick = () => { currentClass = c; render(); };
+            tabs.appendChild(tab);
+        });
+    }
+    buildClassUI();
+
+    function render() {
+        // Update class tabs highlight
+        const tabs = document.getElementById('class-tabs');
+        [...tabs.children].forEach((t,i) => {
+            t.className = 'px-4 py-2 rounded-lg text-sm font-medium ' + (CLASSES[i] === currentClass ? 'bg-green-300 text-green-900' : 'bg-gray-100');
+        });
+
+        const students = allData.filter(d => d.type === 'student' && d.class_name === currentClass);
+        const attendance = allData.filter(d => d.type === 'attendance' && d.class_name === currentClass);
+        const notes = allData.filter(d => d.type === 'note' && d.class_name === currentClass);
+        const journals = allData.filter(d => d.type === 'journal');
+
+        // Student list
+        const sl = document.getElementById('student-list');
+        sl.innerHTML = students.map((s,i) => `<div class="flex justify-between items-center bg-white rounded-lg p-3 shadow-sm"><span>${i+1}. ${s.student_name}</span><button onclick="delRecord('${s.__backendId}')" class="text-red-500 text-xs">Hapus</button></div>`).join('');
+
+        // Attendance
+        const al = document.getElementById('attendance-list');
+        const attDateVal = document.getElementById('attendance-date').value;
+        const attForDate = attendance.filter(a => a.date === attDateVal);
+        al.innerHTML = students.map(s => {
+            const existing = attForDate.find(a => a.student_name === s.student_name);
+            const status = existing ? existing.attendance_status : '—';
+            return `<div class="flex justify-between items-center bg-white rounded-lg p-3 shadow-sm"><span>${s.student_name}</span><span class="font-semibold">${status}</span></div>`;
+        }).join('');
+
+        // Notes
+        const ns = document.getElementById('note-student-select');
+        ns.innerHTML = '<option value="">Pilih Murid</option>' + students.map(s => `<option>${s.student_name}</option>`).join('');
+        
+        // Attendance student select
+        const as = document.getElementById('attendance-student-select');
+        as.innerHTML = '<option value="">Pilih Murid</option>' + students.map(s => `<option>${s.student_name}</option>`).join('');
+        
+        // Nilai student select
+        const ns2 = document.getElementById('nilai-student-select');
+        ns2.innerHTML = '<option value="">Pilih Murid</option>' + students.map(s => `<option>${s.student_name}</option>`).join('');
+        
+        const nl = document.getElementById('notes-list');
+        nl.innerHTML = notes.map(n => `<div class="bg-white rounded-lg p-3 shadow-sm"><strong>${n.student_name}</strong>: ${n.notes} <button onclick="delRecord('${n.__backendId}')" class="text-red-500 text-xs ml-2">Hapus</button></div>`).join('');
+
+        // Scores
+        const scores = allData.filter(d => d.type === 'score' && d.class_name === currentClass);
+        const nt = document.getElementById('nilai-table');
+        nt.innerHTML = students.map(s => {
+            const score = scores.find(sc => sc.student_name === s.student_name) || {};
+            return `<tr class="border-t"><td class="p-2">${s.student_name}</td>${['tp1','tp2','tp3','tp4','tp5','tp6','tp7','tp8','tp9','psas'].map(field => `<td class="p-2"><input type="number" min="0" max="100" value="${score[`score_${field}`]||''}" onchange="saveScore('${s.student_name}','${field}',this.value)" class="w-16 border rounded px-2 py-1"></td>`).join('')}</tr>`;
+        }).join('');
+
+        // Journal table
+        const jt = document.getElementById('jurnal-table');
+        jt.innerHTML = journals.sort((a,b) => b.created_at.localeCompare(a.created_at)).map(j => `<tr class="border-t"><td class="p-2">${j.date}</td><td class="p-2">${j.period}</td><td class="p-2">${j.class_name}</td><td class="p-2">${j.activity}</td><td class="p-2">${j.notes||''}</td><td class="p-2"><button onclick="delRecord('${j.__backendId}')" class="text-red-500 text-xs">Hapus</button></td></tr>`).join('');
+    }
+
+    async function addStudent() {
+        const name = document.getElementById('student-name-input').value.trim();
+        if (!name) return;
+        if (allData.length >= 999) { showLimitWarning(); return; }
+        showLoading(true);
+        const r = await window.dataSdk.create({ type:'student', class_name:currentClass, student_name:name, date:'', period:'', activity:'', attendance_status:'', notes:'', created_at:new Date().toISOString() });
+        showLoading(false);
+        if (r.isOk) {
+            document.getElementById('student-name-input').value = '';
+        } else {
+            showError('Gagal menambah murid. Silakan coba lagi.');
+        }
+    }
+
+    async function uploadCSV(e) {
+        const file = e.target.files[0]; if (!file) return;
+        const text = await file.text();
+        const names = text.split(/[\r\n]+/).map(l => l.trim()).filter(Boolean);
+        showLoading(true);
+        for (const name of names) {
+            if (allData.length >= 999) { showLimitWarning(); break; }
+            await window.dataSdk.create({ type:'student', class_name:currentClass, student_name:name, date:'', period:'', activity:'', attendance_status:'', notes:'', created_at:new Date().toISOString() });
+        }
+        showLoading(false);
+        e.target.value = '';
+    }
+
+    async function markAttendance(studentName, status) {
+        const dateVal = document.getElementById('attendance-date').value;
+        if (!dateVal) return;
+        const existing = allData.find(d => d.type==='attendance' && d.class_name===currentClass && d.student_name===studentName && d.date===dateVal);
+        showLoading(true);
+        if (existing) {
+            await window.dataSdk.update({...existing, attendance_status: status});
+        } else {
+            if (allData.length >= 999) { showLimitWarning(); showLoading(false); return; }
+            await window.dataSdk.create({ type:'attendance', class_name:currentClass, student_name:studentName, date:dateVal, period:'', activity:'', attendance_status:status, notes:'', created_at:new Date().toISOString() });
+        }
+        showLoading(false);
+    }
+
+    async function saveAttendanceInput() {
+        const dateVal = document.getElementById('attendance-date').value;
+        const studentName = document.getElementById('attendance-student-select').value;
+        const status = document.getElementById('attendance-status-select').value;
+        if (!dateVal || !studentName || !status) return;
+        const existing = allData.find(d => d.type==='attendance' && d.class_name===currentClass && d.student_name===studentName && d.date===dateVal);
+        showLoading(true);
+        let result;
+        if (existing) {
+            result = await window.dataSdk.update({...existing, attendance_status: status});
+        } else {
+            if (allData.length >= 999) { showLimitWarning(); showLoading(false); return; }
+            result = await window.dataSdk.create({ type:'attendance', class_name:currentClass, student_name:studentName, date:dateVal, period:'', activity:'', attendance_status:status, notes:'', created_at:new Date().toISOString() });
+        }
+        showLoading(false);
+        if (result.isOk) {
+            document.getElementById('attendance-student-select').value = '';
+            document.getElementById('attendance-status-select').value = '';
+        } else {
+            showError('Gagal menyimpan kehadiran. Silakan coba lagi.');
+        }
+    }
+
+    async function addNote() {
+        const student = document.getElementById('note-student-select').value;
+        const text = document.getElementById('note-text').value.trim();
+        if (!student || !text) return;
+        if (allData.length >= 999) { showLimitWarning(); return; }
+        showLoading(true);
+        const r = await window.dataSdk.create({ type:'note', class_name:currentClass, student_name:student, date:new Date().toISOString().slice(0,10), period:'', activity:'', attendance_status:'', notes:text, created_at:new Date().toISOString() });
+        showLoading(false);
+        if (r.isOk) {
+            document.getElementById('note-text').value = '';
+        } else {
+            showError('Gagal menyimpan catatan. Silakan coba lagi.');
+        }
+    }
+
+    async function saveNilaiInput() {
+        const student = document.getElementById('nilai-student-select').value;
+        const period = document.getElementById('nilai-period-select').value;
+        const value = document.getElementById('nilai-input').value.trim();
+        if (!student || !period || !value) return;
+        const field = period;
+        const existing = allData.find(d => d.type === 'score' && d.class_name === currentClass && d.student_name === student);
+        const scoreData = {
+            type: 'score',
+            class_name: currentClass,
+            student_name: student,
+            date: '',
+            period: '',
+            activity: '',
+            attendance_status: '',
+            notes: '',
+            score_tp1: existing?.score_tp1 || '',
+            score_tp2: existing?.score_tp2 || '',
+            score_tp3: existing?.score_tp3 || '',
+            score_tp4: existing?.score_tp4 || '',
+            score_tp5: existing?.score_tp5 || '',
+            score_tp6: existing?.score_tp6 || '',
+            score_tp7: existing?.score_tp7 || '',
+            score_tp8: existing?.score_tp8 || '',
+            score_tp9: existing?.score_tp9 || '',
+            score_psas: existing?.score_psas || '',
+            created_at: existing?.created_at || new Date().toISOString()
+        };
+        scoreData[`score_${field}`] = value;
+        showLoading(true);
+        let result;
+        if (existing) {
+            result = await window.dataSdk.update({...existing, ...scoreData});
+        } else {
+            if (allData.length >= 999) { showLimitWarning(); showLoading(false); return; }
+            result = await window.dataSdk.create(scoreData);
+        }
+        showLoading(false);
+        if (result.isOk) {
+            document.getElementById('nilai-student-select').value = '';
+            document.getElementById('nilai-period-select').value = '';
+            document.getElementById('nilai-input').value = '';
+        } else {
+            showError('Gagal menyimpan nilai. Silakan coba lagi.');
+        }
+    }
+
+    async function saveScore(studentName, field, value) {
+        const existing = allData.find(d => d.type === 'score' && d.class_name === currentClass && d.student_name === studentName);
+        const scoreData = {
+            type: 'score',
+            class_name: currentClass,
+            student_name: studentName,
+            type: 'score',
+            date: '',
+            period: '',
+            activity: '',
+            attendance_status: '',
+            notes: '',
+            score_tp1: existing?.score_tp1 || '',
+            score_tp2: existing?.score_tp2 || '',
+            score_tp3: existing?.score_tp3 || '',
+            score_tp4: existing?.score_tp4 || '',
+            score_tp5: existing?.score_tp5 || '',
+            score_tp6: existing?.score_tp6 || '',
+            score_tp7: existing?.score_tp7 || '',
+            score_tp8: existing?.score_tp8 || '',
+            score_tp9: existing?.score_tp9 || '',
+            score_psas: existing?.score_psas || '',
+            created_at: existing?.created_at || new Date().toISOString()
+        };
+        scoreData[`score_${field}`] = value;
+        if (existing) {
+            await window.dataSdk.update({...existing, ...scoreData});
+        } else {
+            if (allData.length >= 999) { showLimitWarning(); return; }
+            await window.dataSdk.create(scoreData);
+        }
+    }
+
+    document.getElementById('jurnal-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (allData.length >= 999) { showLimitWarning(); return; }
+        showLoading(true);
+        const r = await window.dataSdk.create({ type:'journal', class_name:document.getElementById('j-class').value, student_name:'', date:document.getElementById('j-date').value, period:document.getElementById('j-period').value, activity:document.getElementById('j-activity').value, attendance_status:'', notes:document.getElementById('j-notes').value, created_at:new Date().toISOString() });
+        showLoading(false);
+        if (r.isOk) {
+            e.target.reset();
+            document.getElementById('j-date').value = new Date().toISOString().slice(0,10);
+        } else {
+            showError('Gagal menyimpan jurnal. Silakan coba lagi.');
+        }
+    });
+
+    async function delRecord(id) {
+        const rec = allData.find(d => d.__backendId === id);
+        if (!rec) return;
+        showLoading(true);
+        await window.dataSdk.delete(rec);
+        showLoading(false);
+    }
+
+    function showLimitWarning() {
+        const d = document.createElement('div');
+        d.className = 'fixed top-4 right-4 bg-red-100 text-red-800 px-4 py-3 rounded-lg shadow-lg z-50 text-sm';
+        d.textContent = 'Batas 999 data tercapai. Hapus beberapa data terlebih dahulu.';
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 3000);
+    }
+
+    function showError(message) {
+        const d = document.createElement('div');
+        d.className = 'fixed top-4 right-4 bg-red-100 text-red-800 px-4 py-3 rounded-lg shadow-lg z-50 text-sm';
+        d.textContent = message;
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 4000);
+    }
+
+    // Downloads
+    function toCSV(headers, rows) {
+        return [headers.join(','), ...rows.map(r => r.map(c => `"${(c||'').replace(/"/g,'""')}"`).join(','))].join('\n');
+    }
+    function downloadFile(content, filename) {
+        const blob = new Blob([content], {type:'text/csv'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+    }
+    function downloadStudents() {
+        const students = allData.filter(d => d.type==='student' && d.class_name===currentClass);
+        downloadFile(toCSV(['No','Nama'], students.map((s,i) => [i+1, s.student_name])), `Murid_${currentClass}.csv`);
+    }
+    function downloadAttendance() {
+        const dateVal = document.getElementById('attendance-date').value;
+        const att = allData.filter(d => d.type==='attendance' && d.class_name===currentClass && d.date===dateVal);
+        downloadFile(toCSV(['Nama','Status'], att.map(a => [a.student_name, a.attendance_status])), `Kehadiran_${currentClass}_${dateVal}.csv`);
+    }
+    function downloadJurnal() {
+        const journals = allData.filter(d => d.type==='journal');
+        downloadFile(toCSV(['Tanggal','Jam','Kelas','Kegiatan','Catatan'], journals.map(j => [j.date, j.period, j.class_name, j.activity, j.notes])), 'Jurnal_Pembelajaran.csv');
+    }
+
+    function downloadScores() {
+        const students = allData.filter(d => d.type==='student' && d.class_name===currentClass);
+        const scores = allData.filter(d => d.type==='score' && d.class_name===currentClass);
+        const rows = students.map((s,i) => {
+            const score = scores.find(sc => sc.student_name === s.student_name) || {};
+            return [i+1, s.student_name, score.score_tp1||'', score.score_tp2||'', score.score_tp3||'', score.score_tp4||'', score.score_tp5||'', score.score_tp6||'', score.score_tp7||'', score.score_tp8||'', score.score_tp9||'', score.score_psas||''];
+        });
+        downloadFile(toCSV(['No','Nama','TP 1','TP 2','TP 3','TP 4','TP 5','TP 6','TP 7','TP 8','TP 9','PSAS'], rows), `Nilai_${currentClass}.csv`);
+    }
+
+    // Set today's date
+    document.getElementById('attendance-date').value = new Date().toISOString().slice(0,10);
+    document.getElementById('j-date').value = new Date().toISOString().slice(0,10);
+
+    lucide.createIcons();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a16d8ab940fa4573',t:'MTc4MzMyOTcxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
